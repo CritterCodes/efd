@@ -1,0 +1,60 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://myapplication/user.json",
+    "title": "User",
+    "description": "A document representing a user of the system, storing essential identity and authentication details.",
+    "type": "object",
+    "required": ["userID", "firstName", "lastName", "username", "email", "password", "phoneNumber", "accountType"],
+    "properties": {
+        "userID": {
+            "description": "The unique identifier for the user",
+            "type": "string"
+        },
+        "firstName": {
+            "description": "The user's first name",
+            "type": "string",
+            "minLength": 1
+        },
+        "lastName": {
+            "description": "The user's last name",
+            "type": "string",
+            "minLength": 1
+        },
+        "username": {
+            "description": "The user's unique username",
+            "type": "string",
+            "minLength": 3,
+            "pattern": "^[a-zA-Z0-9_]+$"
+        },
+        "email": {
+            "description": "The user's email address",
+            "type": "string",
+            "format": "email"
+        },
+        "password": {
+            "description": "The user's password, which must be securely stored and never exposed",
+            "type": "string",
+            "minLength": 6
+        },
+        "phoneNumber": {
+            "description": "The user's phone number",
+            "type": "string",
+            "pattern": "^[0-9]{10}$" 
+        },
+        "accountType": {
+            "description": "The type of account the user holds",
+            "type": "string",
+            "enum": ["Standard", "Admin", "Collector"]
+        },
+        "createdAt": {
+            "description": "The date and time the user account was created",
+            "type": "string",
+            "format": "date-time"
+        },
+        "updatedAt": {
+            "description": "The date and time the user account was last updated",
+            "type": "string",
+            "format": "date-time"
+        }
+    }
+}

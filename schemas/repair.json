@@ -1,0 +1,69 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://myapplication/repair.json",
+    "title": "Repair",
+    "description": "A document representing a jewelry repair order",
+    "type": "object",
+    "required": ["repairID", "userID", "description", "picture", "receivedDate", "promiseDate", "metalType", "repairTasks"],
+    "properties": {
+        "repairID": {
+            "description": "The unique identifier for the repair order",
+            "type": "string"
+        },
+        "userID": {
+            "description": "Reference to the unique identifier of the user who requested the repair",
+            "type": "string"
+        },
+        "description": {
+            "description": "Detailed description of the repair job",
+            "type": "string",
+            "minLength": 3
+        },
+        "picture": {
+            "description": "URL or path to an image of the item being repaired",
+            "type": "string",
+            "format": "uri"
+        },
+        "receivedDate": {
+            "description": "Date when the item was received for repair",
+            "type": "string",
+            "format": "date-time"
+        },
+        "promiseDate": {
+            "description": "Date by which the repair is promised to be completed",
+            "type": "string",
+            "format": "date-time"
+        },
+        "metalType": {
+            "description": "Type of metal involved in the repair",
+            "type": "string"
+        },
+        "repairTasks": {
+            "description": "List of tasks associated with the repair job",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": ["taskID", "task", "status"],
+                "properties": {
+                    "taskID": {
+                        "description": "Unique identifier for the task",
+                        "type": "string"
+                    },
+                    "task": {
+                        "description": "Description of the task",
+                        "type": "string"
+                    },
+                    "status": {
+                        "description": "Current status of the task",
+                        "type": "string",
+                        "enum": ["Pending", "In Progress", "Completed"]
+                    },
+                    "assignedTo": {
+                        "description": "Optional: ID of the employee assigned to this task",
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

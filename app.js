@@ -1,8 +1,9 @@
 /* eslint-disable import/extensions */
 import express from 'express';
 import bodyParser from 'body-parser';
-import errorMiddleware from './middleware/errorHandler.js';
-import repairRouter from './routes/repair.routes.js';
+//import errorMiddleware from './middleware/errorHandler.js';
+import repairRouter from './routes/repair.route.js';
+import authRouter from './routes/auth.route.js';  // Ensure this path is correct
 import { db } from './lib/database.js';
 
 const { json } = bodyParser;
@@ -12,11 +13,13 @@ const app = express();
 const port = 3000;
 
 app.use(json());
+app.use(express.static('public'));
 
-app.use('/todo/api/v1', repairRouter);
+app.use('/api/efd/v1', authRouter);
+app.use('/api/efd/v1', repairRouter);
 
 // Error middleware MUST be last
-app.use(errorMiddleware());
+//app.use(errorMiddleware());
 
 // TODO: Environment based configs
 const config = {

@@ -1,0 +1,48 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://myapplication/collector.json",
+    "title": "Collector",
+    "description": "A document representing a collector profile, which is a specialized user with additional attributes like a digital business card.",
+    "type": "object",
+    "required": ["collectorID", "userID", "picture", "bio", "websites", "socials"],
+    "properties": {
+        "collectorID": {
+            "description": "The unique identifier for the collector",
+            "type": "string"
+        },
+        "userID": {
+            "description": "Reference to the unique identifier of the user this collector profile belongs to",
+            "type": "string"
+        },
+        "picture": {
+            "description": "URL or path to the collector's profile picture",
+            "type": "string",
+            "format": "uri"
+        },
+        "bio": {
+            "description": "Short biography of the collector",
+            "type": "string",
+            "minLength": 10
+        },
+        "websites": {
+            "description": "List of URLs to the collector's personal or business websites",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "format": "uri"
+            }
+        },
+        "socials": {
+            "description": "Social media links for the collector, keyed by platform name",
+            "type": "object",
+            "additionalProperties": {
+                "type": "string",
+                "format": "uri"
+            }
+        },
+        "additionalDetails": {
+            "description": "Any additional details specific to collectors, such as specialties or years of experience",
+            "type": "array"
+        }
+    }
+}

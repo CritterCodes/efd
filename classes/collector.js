@@ -1,7 +1,7 @@
 export default class Collector {
-    constructor (collectorID, user, picture, bio, websites, socials) {
+    constructor (collectorID, userID, picture, bio, websites, socials) {
         this.collectorID = collectorID;
-        this.user = user;
+        this.userID = userID;
         this.picture = picture;
         this.bio = bio;
         this.websites = websites;
