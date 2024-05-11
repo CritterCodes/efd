@@ -40,30 +40,7 @@
         },
         "repairTasks": {
             "description": "List of tasks associated with the repair job",
-            "type": "array",
-            "items": {
-                "type": "object",
-                "required": ["taskID", "task", "status"],
-                "properties": {
-                    "taskID": {
-                        "description": "Unique identifier for the task",
-                        "type": "string"
-                    },
-                    "task": {
-                        "description": "Description of the task",
-                        "type": "string"
-                    },
-                    "status": {
-                        "description": "Current status of the task",
-                        "type": "string",
-                        "enum": ["Pending", "In Progress", "Completed"]
-                    },
-                    "assignedTo": {
-                        "description": "Optional: ID of the employee assigned to this task",
-                        "type": "string"
-                    }
-                }
-            }
+            "type": "array"
         }
     }
 }
