@@ -26,13 +26,11 @@
         },
         "receivedDate": {
             "description": "Date when the item was received for repair",
-            "type": "string",
-            "format": "date-time"
+            "type": "string"
         },
         "promiseDate": {
             "description": "Date by which the repair is promised to be completed",
-            "type": "string",
-            "format": "date-time"
+            "type": "string"
         },
         "metalType": {
             "description": "Type of metal involved in the repair",

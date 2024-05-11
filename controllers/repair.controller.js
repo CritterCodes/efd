@@ -16,7 +16,7 @@ export const createRepair = async (req, res, next) => {
 
 export const getRepairList = async (req, res, next) => {
     try {
-        const result = await RepairCoordinator.getRepairListRepair(req.body);
+        const result = await RepairCoordinator.getRepairList(req.body);
 
         if (result) {
             res.status(200).json(result);

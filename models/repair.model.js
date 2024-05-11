@@ -1,11 +1,12 @@
 import { db } from '../lib/database.js';
 import Constants from '../lib/constants.js';
 
-const readRepair = async (repairId) => {
+const readRepair = async (repairID) => {
     try {
+        console.log(repairID);
         let response;
         const repair = await db.dbRepairs().findOne(
-            { repairId },
+            { repairID },
             { projection: Constants.DEFAULT_PROJECTION },
           );
           if (!repair) {
@@ -31,7 +32,7 @@ const readRepairTask = async (taskID) => {
     try {
         let response;
         const repairTask = await db.dbRepairTasks().findOne(
-            { taskID: `${taskID}` },
+            { "taskID": `${taskID}` },
             { projection: Constants.DEFAULT_PROJECTION },
           );
           if (!repairTask) {
@@ -74,17 +75,49 @@ const removeTask = async (repair, taskID) => {
     return filteredList;
 };
 
-const listRepairs = async (filters) => {
+const listRepairs = async (filter, value) => {
     try {
         let response;
-        const list = await db.dbRepairs().findMany(
-            { name },
-            { projection: Constants.DEFAULT_PROJECTION },
-          );
+        let list;
+        switch (filter) {
+            case 'userID':
+                list = await db.dbRepairs().find(
+                    { "userID": value },
+                    { projection: Constants.DEFAULT_PROJECTION },
+                  ).toArray();
+                break;
+            case 'promiseDate':
+                list = await db.dbRepairs().find(
+                    { "promiseDate": value },
+                    { projection: Constants.DEFAULT_PROJECTION },
+                  ).toArray();
+                break;
+            case 'recievedDate':
+                list = await db.dbRepairs().find(
+                    { "recievedDate": value },
+                    { projection: Constants.DEFAULT_PROJECTION },
+                  ).toArray();
+                break;
+            case 'recievedDate':
+                list = await db.dbRepairs().find(
+                    { "recievedDate": value },
+                    { projection: Constants.DEFAULT_PROJECTION },
+                  ).toArray();
+                break;
+            case 'metalType':
+                list = await db.dbRepairs().find(
+                    { "metalType": value },
+                    { projection: Constants.DEFAULT_PROJECTION },
+                  ).toArray();
+                break;
+            default:
+                return `Cannot search by ${filter}`;
+        }
+        
           if (!list) {
                 response = {
                     status: false,
-                    error: 'That list does not exist. Try another list name.',
+                    error: 'There are no repairs matching that filter. Try another filter.',
                 };
                 console.log(response);
           } else {
@@ -104,14 +137,15 @@ export default class RepairModel {
     static createRepair = async (repair) => {
         try {
             let response;
-            let repairTasks = [];
             repair.repairTasks.forEach( async taskID => {
                 console.log(`searching for taskID: ${taskID}`);
                 const foundTask = await readRepairTask(taskID);
-                repairTasks.push(foundTask);
-                repair.repairTasks.pop();
+                //console.log(foundTask);
+                repair.repairTasks.push(foundTask.repairTask);
+                console.log(repair.repairTasks);
+                repair.repairTasks.shift();
             });
-            repair.repairTasks = repairTasks;
+            //console.log(repair.repairTasks);
             await writeRepair(repair.repairID, repair);
             response = {
                 newRepair: repair
@@ -122,21 +156,25 @@ export default class RepairModel {
         }
     };
 
-    static getRepairList = async (filters) => {
+    static getRepairList = async (filter, value) => {
         
         let response;
             try {
                 // Read the existing tasks
-                const tdList = await readList(toDoList);
-                if (!tdList.status) {
-                    response = tdList.error;
+                console.log(filter);
+                const repairList = await listRepairs(filter, value);
+                if (!repairList.status) {
+                    response = repairList.error;
                     console.error(response);
                 } else {
-                    response = tdList.list;
+                    response = repairList.list;
                 }
             } catch (error) {
                 return console.error('An error occurred while showing the list:', error.message);
             }
+            console.log(response);
             return response;
-    }
+    };
+
+    static getRepair = async (repairID) => await readRepair(repairID);
 };
