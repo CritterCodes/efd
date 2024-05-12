@@ -6,6 +6,7 @@ import Ajv from 'ajv';
 import { response } from 'express';
 import addFormats from 'ajv-formats';
 import repairSchema from '../schemas/repair.json' assert { type: 'json' };
+import { deleteRepairTask } from '../controllers/repair.controller.js';
 
 const ajv = new Ajv();
 addFormats(ajv);
@@ -76,7 +77,7 @@ export default class RepairCoordinator {
                 break;
             }
         });
-
+/*
         const valid = validate(updatedRepair);
         if (!valid) {
         const error = new Error('Validation failed');
@@ -84,8 +85,17 @@ export default class RepairCoordinator {
         error.type = 'ValidationError';
         error.details = validate.errors;
         throw error;
-        }
+        }*/
 
-        return await ToDoModel.updateTask(toDoList, taskID, update, updatedRepair);
+        return await RepairModel.updateRepair(repairID, update, updatedRepair);
     }
+
+    static deleteRepair = async (repairID, repairTaskID) => await RepairModel.deleteRepair(repairID, repairTaskID);
+
+    static addRepairTasks = async (repairID, tasks) => await RepairModel.addRepairTasks(repairID, tasks);
+
+    static updateRepairTask = async (repairID, repairTaskID, update) => await RepairModel.updateRepairTask(repairID, repairTaskID, update);
+
+    static deleteRepairTask = async (repairID, repairTaskID) => await RepairModel.deleteRepairTask(repairID, repairTaskID);
+    
 }

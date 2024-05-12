@@ -57,15 +57,57 @@ export const updateRepair = async (req, res, next) => {
 };
 
 export const deleteRepair = async (req, res, next) => {
-    try {
-        const result = await RepairCoordinator.deleteRepair(req.params.repairID);
+  try {
+      const result = await RepairCoordinator.deleteRepair(req.params.repairID);
 
-        if (result) {
-            res.status(200).json(result);
-          } else {
-            res.status(404).json();
-          }
-    } catch (ex) {
-        next(ex);
-    }
+      if (result) {
+          res.status(200).json(result);
+        } else {
+          res.status(404).json();
+        }
+  } catch (ex) {
+      next(ex);
+  }
 };
+
+export const addRepairTasks = async (req, res, next) => {
+  try {
+    const result = await RepairCoordinator.addRepairTasks(req.params.repairID, req.body.repairTasks);
+
+    if (result) {
+      res.status(200).json(result);
+    } else {
+      res.status(404).json();
+    }
+  } catch (ex) {
+    next(ex);
+  }
+}
+
+export const updateRepairTask = async (req, res, next) => {
+  try {
+    const result = await RepairCoordinator.updateRepairTask(req.params.repairID, req.params.repairTaskID, req.body.repairTask);
+
+    if (result) {
+      res.status(200).json(result);
+    } else {
+      res.status(404).json();
+    }
+  } catch (ex) {
+    next(ex);
+  }
+}
+
+export const deleteRepairTask = async (req, res, next) => {
+  try {
+    const result = await RepairCoordinator.deleteRepairTask(req.params.repairID, req.params.repairTaskID);
+
+    if (result) {
+      res.status(200).json(result);
+    } else {
+      res.status(404).json();
+    }
+  } catch (ex) {
+    next(ex);
+  }
+}
