@@ -211,26 +211,6 @@ export default class RepairModel {
         return response;
     };
 
-    static getFilteredRepairList = async (filter, value) => {
-
-        let response;
-        try {
-            // Read the existing tasks
-            console.log(filter);
-            const repairList = await listRepairs(filter, value);
-            if (!repairList.status) {
-                response = repairList.error;
-                console.error(response);
-            } else {
-                response = repairList.list;
-            }
-        } catch (error) {
-            return console.error('An error occurred while showing the list:', error.message);
-        }
-        console.log(response);
-        return response;
-    };
-
     static getRepair = async (repairID) => await readRepair(repairID);
 
     static updateRepair = async (repairID, updatedRepair) => {
@@ -311,39 +291,19 @@ export default class RepairModel {
                 response = repair.error;
                 console.error(response);
             } else {
-                const foundTask = await getTask(repairTaskID)
+                const foundTask = await getTask(update)
                 const importedTask = await readRepairTask(repairID, repairTaskID);
                 if (!importedTask.status) {
                     response = importedTask.error;
                 } else {
-                    Object.keys(importedTask.repairTasks.repairTasks).forEach((taskKey) => {
-                        if (updatedRepair[taskKey] && taskKey === 'recievedDate') {
-                            return;
-                        } else if (updatedRepair[taskKey]) {
-                            importedTask.task[taskKey] = [taskKey];
-                        }
-                    });
-                    if (!importedTask.task.update) {
-                        importedTask.task.update = [update];
-                    } else {
-                        importedTask.task.update.push(update);
-                    }
-
-                    tdList.list.tasks = tdList.list.tasks
-                        .filter((filteredTask) => filteredTask.taskID !== taskID);
-
-                    if (importedTask.task.status === 'completed') {
-                        tdList.list.completedTasks.push(importedTask.task);
-                    } else {
-                        tdList.list.tasks.push(importedTask.task);
-                    }
-                    response = {
-                        updatedRepair: importedTask.task,
-                        updatedList: tdList.list,
-                    };
+                    await removeRepairTask(repair.repair, repairTaskID);
+                    repair.repair.repairTasks.push(foundTask.repairTask);
                 }
-                writeTasks(toDoList, tdList.list);
-                console.log(response);
+                writeRepair(repairID, repair.repair);
+                response = {
+                    updatedTask: importedTask.repairTask,
+                    updatedRepair: repair.repair
+                }
             }
         } catch (error) {
             console.error('An error occurred while updating the task:', error.message);
@@ -364,7 +324,7 @@ export default class RepairModel {
                 if (!removedTask.status) {
                     response = removedTask.error;
                 } else {
-                    repair.repair.repairTasks = removeRepairTasks(repair.repair, repairTaskID);
+                    repair.repair.repairTasks = removeRepairTask(repair.repair, repairTaskID);
                     response = {
                         deletedTask: removedTask.task,
                         newList: repair.repair,
