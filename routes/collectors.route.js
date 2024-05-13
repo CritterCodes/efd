@@ -5,13 +5,15 @@ import {
     getCollector,
     updateCollector,
     deleteCollector,
-} from '../controllers/collector.controller.js';
+} from '../controllers/collectors.controller.js';
 
 const collectorRouter = express.Router();
 
-collectorRouter.post('/collectors', createCollector);
+//  api/efd/v1/collectors
 
 collectorRouter.get('/collectors', getCollectorList);
+
+collectorRouter.post('/collectors/:userID', createCollector);
 
 collectorRouter.get('/collectors/:collectorID', getCollector);
 
