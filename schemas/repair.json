@@ -26,13 +26,11 @@
         },
         "receivedDate": {
             "description": "Date when the item was received for repair",
-            "type": "string",
-            "format": "date-time"
+            "type": "string"
         },
         "promiseDate": {
             "description": "Date by which the repair is promised to be completed",
-            "type": "string",
-            "format": "date-time"
+            "type": "string"
         },
         "metalType": {
             "description": "Type of metal involved in the repair",
@@ -40,30 +38,7 @@
         },
         "repairTasks": {
             "description": "List of tasks associated with the repair job",
-            "type": "array",
-            "items": {
-                "type": "object",
-                "required": ["taskID", "task", "status"],
-                "properties": {
-                    "taskID": {
-                        "description": "Unique identifier for the task",
-                        "type": "string"
-                    },
-                    "task": {
-                        "description": "Description of the task",
-                        "type": "string"
-                    },
-                    "status": {
-                        "description": "Current status of the task",
-                        "type": "string",
-                        "enum": ["Pending", "In Progress", "Completed"]
-                    },
-                    "assignedTo": {
-                        "description": "Optional: ID of the employee assigned to this task",
-                        "type": "string"
-                    }
-                }
-            }
+            "type": "array"
         }
     }
 }

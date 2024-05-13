@@ -1,5 +1,6 @@
 export default class RepairTask {
-    constructor (taskID, task) {
+    constructor (repairTaskID, taskID, task) {
+        this.repairTaskID = repairTaskID;
         this.taskID = taskID;
         this.task = task;
     }
