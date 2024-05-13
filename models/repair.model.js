@@ -111,6 +111,12 @@ const listRepairs = async (filter, value) => {
         let list;
         if (filter) {
             switch (filter) {
+                case 'repairID':
+                    list = await db.dbRepairs().find(
+                        { "repairID": value },
+                        { projection: Constants.DEFAULT_PROJECTION },
+                    ).toArray();
+                    break;
                 case 'userID':
                     list = await db.dbRepairs().find(
                         { "userID": value },
@@ -296,8 +302,9 @@ export default class RepairModel {
                 if (!importedTask.status) {
                     response = importedTask.error;
                 } else {
-                    await removeRepairTask(repair.repair, repairTaskID);
-                    repair.repair.repairTasks.push(foundTask.repairTask);
+                    const newRepairTasks = await removeRepairTask(repair.repair, repairTaskID);
+                    newRepairTasks.push(foundTask.repairTask);
+                    repair.repair.repairTasks = newRepairTasks;
                 }
                 writeRepair(repairID, repair.repair);
                 response = {
@@ -324,9 +331,9 @@ export default class RepairModel {
                 if (!removedTask.status) {
                     response = removedTask.error;
                 } else {
-                    repair.repair.repairTasks = removeRepairTask(repair.repair, repairTaskID);
+                    repair.repair.repairTasks = await removeRepairTask(repair.repair, repairTaskID);
                     response = {
-                        deletedTask: removedTask.task,
+                        deletedTask: removedTask.repairTask,
                         newList: repair.repair,
                     };
                     // Filter out the task with the specified id
