@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Repair</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Add New Repair</h2>
+        <form id="repairForm" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="userID" class="form-label">User ID</label>
+                <input type="text" class="form-control" id="userID" name="userID" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <input type="text" class="form-control" id="description" name="description" required>
+            </div>
+            <div class="mb-3">
+                <label for="promiseDate" class="form-label">Promise Date</label>
+                <input type="date" class="form-control" id="promiseDate" name="promiseDate">
+            </div>
+            <div class="mb-3">
+                <label for="metalType" class="form-label">Metal Type</label>
+                <select class="form-select" id="metalType" name="metalType">
+                    <option value="gold">Gold</option>
+                    <option value="silver">Silver</option>
+                    <option value="platinum">Platinum</option>
+                </select>
+            </div>
+            <div class="mb-3" id="repairTasksContainer">
+                <label for="repairTasks" class="form-label">Repair Tasks</label>
+                <input type="text" class="form-control mb-2" name="repairTasks[]" placeholder="Enter a repair task">
+            </div>
+            <button type="button" id="addTaskButton" class="btn btn-info mb-3">Add Another Task</button>            
+            <div class="mb-3">
+                <label for="repairImage" class="form-label">Repair Image</label>
+                <input type="file" class="form-control" id="repairImage" name="repairImage" accept="image/*">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <div id="message" style="margin-top: 20px;"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    document.getElementById('addTaskButton').addEventListener('click', function() {
+        const container = document.getElementById('repairTasksContainer');
+        const newInput = document.createElement('input');
+        newInput.type = 'text';
+        newInput.className = 'form-control mb-2';
+        newInput.name = 'repairTasks[]';
+        newInput.placeholder = 'Enter a repair task';
+        container.appendChild(newInput);
+    });
+
+    document.getElementById('repairForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+        fetch('http://localhost:3000/api/v1/repairs', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.repairID) {
+                document.getElementById('message').innerHTML = 'New Repair successful! Your Repair ID is ' + data.repairID;
+            } else {
+                document.getElementById('message').innerHTML = 'New Repair failed: ' + data.message;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('message').innerHTML = 'Error during repair submission.';
+        });
+    });
+    </script>
+
+</body>
+</html>
