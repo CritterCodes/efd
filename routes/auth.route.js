@@ -1,9 +1,17 @@
-import express from 'express';
-import AuthController from '../controllers/auth.controller.js';
+// [efd]/routes/auth.route.js
+import { Router } from 'express';
+import {
+    login,
+    signup
+} from '../controllers/auth.controller.js';
+import authenticateToken from '../middleware/authenticate.js';
 
-const router = express.Router();
+const authRouter = Router();
 
-router.post('/auth/signup', AuthController.signup);
-router.post('/auth/login', AuthController.login);
+authRouter.post('/auth/login', login);
+authRouter.post('/auth/register', signup);
+authRouter.get('/auth/status', authenticateToken, (req, res) => {
+    res.json({ isAuthenticated: true });
+});
 
-export default router;
+export default authRouter;

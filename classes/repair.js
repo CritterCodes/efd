@@ -1,5 +1,5 @@
 export default class Repair {
-    constructor(repairID, userID, description, picture, receivedDate, promiseDate, metalType, repairTasks) {
+    constructor(repairID, userID, description, picture, receivedDate, promiseDate, metalType, repairTasks, status) {
         this.repairID = repairID;
         this.userID = userID;
         this.description = description;
@@ -8,5 +8,6 @@ export default class Repair {
         this.promiseDate = promiseDate;
         this.metalType = metalType;
         this.repairTasks = repairTasks;
+        this.status = status;
     }
 }

@@ -39,10 +39,6 @@
                 "type": "string",
                 "format": "uri"
             }
-        },
-        "additionalDetails": {
-            "description": "Any additional details specific to collectors, such as specialties or years of experience",
-            "type": "array"
         }
     }
 }
