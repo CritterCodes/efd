@@ -1,18 +1,36 @@
 import RepairCoordinator from '../coordinators/repair.coordinator.js';
+import fs from 'fs';
+import { createReadStream, createWriteStream } from "fs";
+import {v4 as uuid} from 'uuid';
 
 export const createRepair = async (req, res, next) => {
     try {
-        const result = await RepairCoordinator.createRepair(req.body);
+      console.log(req.body);
+      var newDir = `./public/users/usr-imgs/${req.body.userID}`;
 
-        if (result) {
-            res.status(200).json(result);
-          } else {
-            res.status(404).json();
-          }
+      if (!fs.existsSync(newDir)){
+          fs.mkdirSync(newDir);
+      }
+
+      
+      const imagePath = `${newDir}/img-${uuid().slice(16)}.png`;
+      const saveImage = createWriteStream(`./${imagePath}`);
+      saveImage.on('open', () => req.pipe(saveImage));
+      saveImage.on('close', () => {
+        res.sendStatus(200);
+      });
+      const result = await RepairCoordinator.createRepair(req.body, imagePath);
+
+      if (result) {
+          res.status(200).json(result);
+        } else {
+          res.status(404).json();
+        }
     } catch (ex) {
         next(ex);
     }
 };
+
 
 export const getRepairList = async (req, res, next) => {
     try {

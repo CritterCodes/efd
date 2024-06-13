@@ -11,7 +11,6 @@ import {
 } from '../controllers/repair.controller.js';
 
 const repairRouter = express.Router();
-
 //  Create Repair Route
 
 repairRouter.post('/repairs', createRepair);
@@ -35,6 +34,10 @@ repairRouter.patch('/repairs/:repairID', updateRepair);
 //  Delete repair
 
 repairRouter.delete('/repairs/:repairID', deleteRepair);
+
+//  Add repair task to existing repair
+
+repairRouter.post('/repairs/:repairID/repair-tasks', addRepairTasks);
 
 //  Update existing repair task
 

@@ -13,13 +13,9 @@ const validate = ajv.compile(collectorSchema);
 export default class CollectorCoordinator {
     static createCollector = async (collector) => {
         try {
-            collector.collectorID = `collector-${uuid().slice(-8)}`;
-            collector.receivedDate = `${new Date()}`;
             const newCollector = new Collector(
                 collector.collectorID,
                 collector.userID,
-                collector.username,
-                collector.description,
                 collector.picture,
                 collector.bio,
                 collector.websites,
@@ -27,13 +23,13 @@ export default class CollectorCoordinator {
             );
 
             const valid = validate(newCollector);
-            if (!valid) {
+            /*if (!valid) {
                 const error = new Error('Validation failed');
                 error.statusCode = 400;
                 error.type = 'ValidationError';
                 error.details = validate.errors;
                 throw error;
-            }
+            }*/
             const response = await CollectorModel.createCollector(newCollector);
             return response;
         } catch (err) {
@@ -52,7 +48,7 @@ export default class CollectorCoordinator {
         }
     };
 
-    static getCollector = async (collectorID) => await CollectorModel.getCollector(collectorID);
+    static getCollector = async (identifier) => await CollectorModel.getCollector(identifier);
 
     static updateCollector = async (collectorID, update) => {
         collectorID, userID, picture, bio, websites, socials

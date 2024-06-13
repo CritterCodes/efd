@@ -21,8 +21,7 @@
         },
         "picture": {
             "description": "URL or path to an image of the item being repaired",
-            "type": "string",
-            "format": "uri"
+            "type": "string"
         },
         "receivedDate": {
             "description": "Date when the item was received for repair",
@@ -39,6 +38,10 @@
         "repairTasks": {
             "description": "List of tasks associated with the repair job",
             "type": "array"
+        },
+        "status": {
+            "description": "Status of the repair",
+            "type": "string"
         }
     }
 }

@@ -13,10 +13,12 @@ addFormats(ajv);
 const validate = ajv.compile(repairSchema);
 
 export default class RepairCoordinator {
-    static createRepair = async (repair) => {
+    static createRepair = async (repair, imagePath) => {
         try {
             repair.repairID = `repair-${uuid().slice(-8)}`;
             repair.receivedDate = `${new Date()}`;
+            repair.picture = imagePath;
+            repair.status = "pending";
             const newRepair = new Repair(
                 repair.repairID,
                 repair.userID,
@@ -25,9 +27,10 @@ export default class RepairCoordinator {
                 repair.receivedDate,
                 repair.promiseDate,
                 repair.metalType,
-                repair.repairTasks
+                repair.repairTasks,
+                repair.status
             );
-            console.log(repair);
+            console.log(newRepair);
 
             const valid = validate(newRepair);
             if (!valid) {
@@ -44,6 +47,8 @@ export default class RepairCoordinator {
         }
     };
 
+    static uploadImage = async(repairID, imagePath) => await RepairCoordinator.uploadImage(repairID, imagePath);
+    
     static getRepairList = async (search) => {
         try {
             const filter = Object.keys(search)[0];

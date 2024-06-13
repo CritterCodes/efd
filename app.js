@@ -1,10 +1,19 @@
-/* eslint-disable import/extensions */
 import express from 'express';
 import bodyParser from 'body-parser';
-//import errorMiddleware from './middleware/errorHandler.js';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import session from 'express-session';
+import passport from './config/passport-config.js';
+import authenticateToken from './middleware/authenticate.js';
+import adminAuth from './middleware/adminAuth.js';
 import repairRouter from './routes/repair.route.js';
-import authRouter from './routes/auth.route.js';  // Ensure this path is correct
+import collectorRouter from './routes/collectors.route.js'
+import authRouter from './routes/auth.route.js';
+import userRouter from './routes/users.route.js'; 
+import connectRouter from './routes/connect.route.js';
+import reviewsRouter from './routes/reviews.route.js';
 import { db } from './lib/database.js';
+import axios from 'axios';
 
 const { json } = bodyParser;
 
@@ -12,11 +21,28 @@ const { json } = bodyParser;
 const app = express();
 const port = 3000;
 
-app.use(json());
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.json());
 app.use(express.static('public'));
 
-app.use('/api/efd/v1', authRouter);
-app.use('/api/efd/v1', repairRouter);
+// Use CORS middleware
+app.use(cors({
+  origin: 'http://localhost:4200/' // Replace with your Angular app's origin
+}));
+app.use('/api/v1', repairRouter);
+app.use('/api/v1', userRouter);
+app.use('/api/v1', authRouter); // Adjust the path to your auth routes
+app.use('/api/v1', collectorRouter);
+app.use('/api/v1', connectRouter);
+app.use('/api/v1', reviewsRouter)
 
 // Error middleware MUST be last
 //app.use(errorMiddleware());
@@ -30,6 +56,8 @@ const config = {
 };
 
 db.init(config);
+
+dotenv.config();
 
 app.listen(port, () => {
   console.log(`Starting express application on port ${port} @ ${new Date().toISOString()}`);

@@ -13,9 +13,9 @@ const collectorRouter = express.Router();
 
 collectorRouter.get('/collectors', getCollectorList);
 
-collectorRouter.post('/collectors/:userID', createCollector);
+collectorRouter.post('/collectors', createCollector);
 
-collectorRouter.get('/collectors/:collectorID', getCollector);
+collectorRouter.get('/collectors/:identifier', getCollector);
 
 collectorRouter.patch('/collectors/:collectorID', updateCollector);
 

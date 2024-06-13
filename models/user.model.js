@@ -1,7 +1,7 @@
 import { db } from '../lib/database.js';
 import Constants from '../lib/constants.js';
 
-const readUser = async (userID) => {
+export const readUser = async (userID) => {
     try {
         console.log(userID);
         let response;

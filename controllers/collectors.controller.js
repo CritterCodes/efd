@@ -2,7 +2,7 @@ import CollectorCoordinator from '../coordinators/collectors.coordinator.js';
 
 export const createCollector = async (req, res, next) => {
     try {
-        const result = await CollectorCoordinator.createCollector(req.params.userID, req.body);
+        const result = await CollectorCoordinator.createCollector(req.body);
 
         if (result) {
             res.status(200).json(result);
@@ -30,7 +30,7 @@ export const getCollectorList = async (req, res, next) => {
 
 export const getCollector = async (req, res, next) => {
     try {
-        const result = await CollectorCoordinator.getCollector(req.params.collectorID);
+        const result = await CollectorCoordinator.getCollector(req.params.identifier);
 
         if (result) {
             res.status(200).json(result);

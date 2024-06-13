@@ -197,6 +197,16 @@ export default class RepairModel {
         }
     };
 
+    static uploadImage = async (repairID, imagePath) => {
+        const update = {
+          $set: {
+            imagePath,
+          },
+        };
+    
+        return db.dbWidgets().updateOne({ id }, update);
+      };
+
     static getRepairList = async (filter, value) => {
 
         let response;
@@ -217,7 +227,10 @@ export default class RepairModel {
         return response;
     };
 
-    static getRepair = async (repairID) => await readRepair(repairID);
+    static getRepair = async (repairID) => {
+        const repair = await readRepair(repairID);
+        return repair.repair;
+    };
 
     static updateRepair = async (repairID, updatedRepair) => {
         let response;

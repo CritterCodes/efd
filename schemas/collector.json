@@ -14,10 +14,6 @@
             "description": "Reference to the unique identifier of the user this collector profile belongs to",
             "type": "string"
         },
-        "username": {
-            "description": "the username of the user this collector profile belongs to",
-            "type": "string"
-        },
         "picture": {
             "description": "URL or path to the collector's profile picture",
             "type": "string",
@@ -43,10 +39,6 @@
                 "type": "string",
                 "format": "uri"
             }
-        },
-        "additionalDetails": {
-            "description": "Any additional details specific to collectors, such as specialties or years of experience",
-            "type": "array"
         }
     }
 }
