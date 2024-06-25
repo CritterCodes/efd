@@ -38,8 +38,7 @@
         },
         "phoneNumber": {
             "description": "The user's phone number",
-            "type": "string",
-            "pattern": "^[0-9]{10}$" 
+            "type": "string"
         },
         "accountType": {
             "description": "The type of account the user holds",

@@ -13,12 +13,13 @@ addFormats(ajv);
 const validate = ajv.compile(repairSchema);
 
 export default class RepairCoordinator {
+    static getTasks = async (body) => RepairModel.getTasks(body);
     static createRepair = async (repair, imagePath) => {
         try {
             repair.repairID = `repair-${uuid().slice(-8)}`;
             repair.receivedDate = `${new Date()}`;
             repair.picture = imagePath;
-            repair.status = "pending";
+            repair.status = "Receiving";
             const newRepair = new Repair(
                 repair.repairID,
                 repair.userID,

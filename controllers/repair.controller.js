@@ -3,6 +3,8 @@ import fs from 'fs';
 import { createReadStream, createWriteStream } from "fs";
 import {v4 as uuid} from 'uuid';
 
+export const getTasks = async (req, res, next) => RepairCoordinator.getTasks(req.body);
+
 export const createRepair = async (req, res, next) => {
     try {
       console.log(req.body);

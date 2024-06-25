@@ -1,6 +1,7 @@
 import { db } from '../lib/database.js';
 import Constants from '../lib/constants.js';
 import { v4 as uuid } from 'uuid';
+import { response } from 'express';
 
 const readRepair = async (repairID) => {
     try {
@@ -83,6 +84,8 @@ const getTask = async (taskID) => {
         throw error; // Re-throw the error for handling in the caller function
     }
 };
+
+
 
 const writeRepair = async (repairID, newRepair) => {
     try {
@@ -174,6 +177,15 @@ const listRepairs = async (filter, value) => {
 }
 
 export default class RepairModel {
+    static getTasks = async (body) => {
+        try { 
+            const response =  await db.dbRepairTasks().find().toArray();
+            console.log(response);
+            return response;
+        } catch (err) {
+            console.error(err);
+        }   
+    }
     static createRepair = async (repair) => {
         try {
             let response;
@@ -181,7 +193,7 @@ export default class RepairModel {
                 console.log(`searching for taskID: ${taskID}`);
                 const foundTask = await getTask(taskID);
                 foundTask.repairTask.repairTaskID = `task-${uuid().slice(-8)}`;
-                //console.log(foundTask);
+                console.log(foundTask);
                 repair.repairTasks.push(foundTask.repairTask);
                 console.log(repair.repairTasks);
                 repair.repairTasks.shift();

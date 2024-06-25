@@ -2,7 +2,7 @@ import UserCoordinator from '../coordinators/user.coordinator.js';
 
 export const createUser = async (req, res, next) => {
     try {
-        const result = await UserCoordinator.createUser(req.params.userID, req.body);
+        const result = await UserCoordinator.createUser(req.body);
 
         if (result) {
             res.status(200).json(result);

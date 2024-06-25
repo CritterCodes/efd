@@ -161,12 +161,13 @@ const listUsers = async (filter, value) => {
 }
 
 export default class UserModel {
-    static createUser = async (profile) => {
-        let reponse;
+    static createUser = async (newUser) => {
+        const collection = db.dbUsers();
         try {
-
+            const result = await collection.insertOne(newUser);
+            return result;
         } catch (error) {
-
+            throw new Error('Error creating user: ' + error.message);
         }
     }
 

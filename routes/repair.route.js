@@ -7,10 +7,14 @@ import {
     deleteRepair,
     addRepairTasks,
     updateRepairTask,
-    deleteRepairTask
+    deleteRepairTask,
+    getTasks
 } from '../controllers/repair.controller.js';
 
 const repairRouter = express.Router();
+
+// list all repair tasks
+repairRouter.get('/repairs/tasks', getTasks)
 //  Create Repair Route
 
 repairRouter.post('/repairs', createRepair);
