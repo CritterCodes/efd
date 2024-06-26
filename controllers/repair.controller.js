@@ -1,5 +1,6 @@
 import RepairCoordinator from '../coordinators/repair.coordinator.js';
 import fs from 'fs';
+import { rename } from 'fs/promises';
 import { createReadStream, createWriteStream } from "fs";
 import {v4 as uuid} from 'uuid';
 
@@ -8,20 +9,8 @@ export const getTasks = async (req, res, next) => RepairCoordinator.getTasks(req
 export const createRepair = async (req, res, next) => {
     try {
       console.log(req.body);
-      var newDir = `./public/users/usr-imgs/${req.body.userID}`;
 
-      if (!fs.existsSync(newDir)){
-          fs.mkdirSync(newDir);
-      }
-
-      
-      const imagePath = `${newDir}/img-${uuid().slice(16)}.png`;
-      const saveImage = createWriteStream(`./${imagePath}`);
-      saveImage.on('open', () => req.pipe(saveImage));
-      saveImage.on('close', () => {
-        res.sendStatus(200);
-      });
-      const result = await RepairCoordinator.createRepair(req.body, imagePath);
+      const result = await RepairCoordinator.createRepair(req.body);
 
       if (result) {
           res.status(200).json(result);
@@ -131,3 +120,29 @@ export const deleteRepairTask = async (req, res, next) => {
     next(ex);
   }
 }
+
+export const uploadImage = async (req, res, next) => {
+  try {
+    console.log('File received:', req.file); // Log the received file
+    if (!req.file) {
+      return res.status(400).send('No file uploaded.');
+    }
+
+    if (req.file.mimetype.indexOf('image') < 0) {
+      return res.status(400).send('Invalid file type.');
+    }
+
+    const newFilename = `${req.file.destination}/${req.file.originalname}`;
+    await rename(req.file.path, newFilename);
+
+    const result = await RepairCoordinator.addImageToRepair(req.params.repairID, newFilename.slice(9));
+
+    if (result) {
+      res.status(204).json();
+    } else {
+      res.status(404).json();
+    }
+  } catch (ex) {
+    next(ex);
+  }
+};

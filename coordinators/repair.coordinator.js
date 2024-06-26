@@ -14,11 +14,12 @@ const validate = ajv.compile(repairSchema);
 
 export default class RepairCoordinator {
     static getTasks = async (body) => RepairModel.getTasks(body);
-    static createRepair = async (repair, imagePath) => {
+    
+    static createRepair = async (repair) => {
         try {
             repair.repairID = `repair-${uuid().slice(-8)}`;
             repair.receivedDate = `${new Date()}`;
-            repair.picture = imagePath;
+            repair.picture = "0";
             repair.status = "Receiving";
             const newRepair = new Repair(
                 repair.repairID,
@@ -103,5 +104,7 @@ export default class RepairCoordinator {
     static updateRepairTask = async (repairID, repairTaskID, update) => await RepairModel.updateRepairTask(repairID, repairTaskID, update);
 
     static deleteRepairTask = async (repairID, repairTaskID) => await RepairModel.deleteRepairTask(repairID, repairTaskID);
+
+    static addImageToRepair = (repairID, imagePath) => RepairModel.addImageToRepair(repairID, imagePath);
     
 }

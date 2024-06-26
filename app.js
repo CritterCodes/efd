@@ -4,8 +4,6 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import session from 'express-session';
 import passport from './config/passport-config.js';
-import authenticateToken from './middleware/authenticate.js';
-import adminAuth from './middleware/adminAuth.js';
 import repairRouter from './routes/repair.route.js';
 import collectorRouter from './routes/collectors.route.js'
 import authRouter from './routes/auth.route.js';
@@ -13,7 +11,6 @@ import userRouter from './routes/users.route.js';
 import connectRouter from './routes/connect.route.js';
 import reviewsRouter from './routes/reviews.route.js';
 import { db } from './lib/database.js';
-import axios from 'axios';
 
 const { json } = bodyParser;
 
@@ -28,10 +25,9 @@ app.use(session({
   saveUninitialized: false
 }));
 
-app.use(passport.initialize());
-app.use(passport.session());
+
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static('browser'));
 
 // Use CORS middleware
 app.use(cors({

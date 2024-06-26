@@ -209,6 +209,12 @@ export default class RepairModel {
         }
     };
 
+    static addImageToRepair = async (repairID, picture) => {
+        const result = await readRepair(repairID);
+        result.repair.picture = picture;
+        return await writeRepair(repairID, result.repair);
+    }
+
     static uploadImage = async (repairID, imagePath) => {
         const update = {
           $set: {
@@ -216,7 +222,7 @@ export default class RepairModel {
           },
         };
     
-        return db.dbWidgets().updateOne({ id }, update);
+        return db.dbRepairs().updateOne({ id }, update);
       };
 
     static getRepairList = async (filter, value) => {
