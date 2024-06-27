@@ -10,7 +10,7 @@ export default class ReviewsCoordinator {
             params: {
               place_id: 'ChIJXRLqZQKwgowRukBqLgMSVNA', // Replace with your actual place ID
               fields: 'reviews',
-              key: process.env.GOOGLE_PLACES_KEY // Replace with your actual API key
+              key: process.env['GOOGLE_PLACES_KEY'] // Replace with your actual API key
             }
           });
           console.log('Google API response:', response.data); // Log the response data

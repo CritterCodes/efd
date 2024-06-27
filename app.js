@@ -3,7 +3,6 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import session from 'express-session';
-import passport from './config/passport-config.js';
 import repairRouter from './routes/repair.route.js';
 import collectorRouter from './routes/collectors.route.js'
 import authRouter from './routes/auth.route.js';
@@ -20,7 +19,7 @@ const port = 3000;
 
 
 app.use(session({
-  secret: process.env.SESSION_SECRET,
+  secret: process.env['SESSION_SECRET'],
   resave: false,
   saveUninitialized: false
 }));
@@ -45,7 +44,7 @@ app.use('/api/v1', reviewsRouter)
 
 // TODO: Environment based configs
 const config = {
-  url: 'mongodb://localhost:27017/',
+  url: process.env['MONGO_URL'],
   database: '[efd]',
   minPoolSize: 3,
   maxPoolSize: 10,

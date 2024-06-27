@@ -21,7 +21,7 @@ export const login = async (req, res) => {
         const user = await AuthCoordinator.loginUser(username, password);
         const token = jwt.sign(
             { userID: user.userID, username: user.username, accountType: user.accountType },
-            process.env.ACCESS_TOKEN_SECRET,
+            process.env['ACCESS_TOKEN_SECRET'],
             { expiresIn: '1h' }
         );
         console.log(user.userID);
