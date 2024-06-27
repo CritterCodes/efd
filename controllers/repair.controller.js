@@ -81,6 +81,7 @@ export const deleteRepair = async (req, res, next) => {
 
 export const addRepairTasks = async (req, res, next) => {
   try {
+    console.log(req.body);
     const result = await RepairCoordinator.addRepairTasks(req.params.repairID, req.body.repairTasks);
 
     if (result) {
