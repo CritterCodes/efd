@@ -304,6 +304,7 @@ export default class RepairModel {
     static addRepairTasks = async (repairID, tasks) => {
         try {
             const repair = await readRepair(repairID);
+            console.log(tasks);
             tasks.forEach(async (task) => {
                 const repairTask = await getTask(task);
                 repairTask.repairTask.repairTaskID = `task-${uuid().slice(-8)}`
