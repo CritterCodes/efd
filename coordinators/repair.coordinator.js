@@ -19,7 +19,7 @@ export default class RepairCoordinator {
         try {
             repair.repairID = `repair-${uuid().slice(-8)}`;
             repair.receivedDate = `${new Date()}`;
-            repair.picture = "0";
+            repair.picture = "none";
             repair.status = "Receiving";
             const newRepair = new Repair(
                 repair.repairID,
