@@ -3,6 +3,7 @@ import { v4 as uuid } from 'uuid';
 import UserModel from '../models/user.model.js';
 import User from '../classes/user.js';
 import Ajv from 'ajv';
+import bcrypt from 'bcryptjs';
 import addFormats from 'ajv-formats';
 import userSchema from '../schemas/user.json' assert { type: 'json' };
 
@@ -13,17 +14,24 @@ const validate = ajv.compile(userSchema);
 export default class UserCoordinator {
     static createUser = async (user) => {
         try {
+            console.log(user.phoneNumber);
             user.userID = `user-${uuid().slice(-8)}`;
-            user.receivedDate = `${new Date()}`;
+            user.accountType = 'Standard';
+            if (!user.username) {
+                user.username = `${user.firstName.toUpperCase().substr(0, 1)}${user.lastName.toLowerCase().substr(0, 4)}${Math.floor(Math.random() * 400)}`;
+                user.password = `${uuid().slice(-8)}`;
+            };
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(user.password, salt);
             const newUser = new User(
                 user.userID,
-                user.userID,
+                user.firstName,
+                user.lastName,
                 user.username,
-                user.description,
-                user.picture,
-                user.bio,
-                user.websites,
-                user.socials
+                user.email,
+                hashedPassword,
+                user.phoneNumber,
+                user.accountType
             );
 
             const valid = validate(newUser);
