@@ -12,8 +12,6 @@ import connectRouter from './routes/connect.route.js';
 import reviewsRouter from './routes/reviews.route.js';
 import { db } from './lib/database.js';
 
-const { json } = bodyParser;
-
 // This is my express application
 const app = express();
 const port = 3000;

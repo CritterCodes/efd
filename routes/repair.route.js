@@ -16,7 +16,7 @@ import multer from 'multer';
 const uploader = multer({
     dest: './browser/assets/repair-imgs',
     limits: {
-      fileSize: 5_000_000, // 5MB
+      fileSize: 10_000_000, // 5MB
     },
   });
 
